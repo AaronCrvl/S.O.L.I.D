@@ -113,9 +113,6 @@ namespace Validacoes
             if (password.Length <= 8)
                 throw new Exception("O tamamnho da senha deve ser maior que 8 caracteres");
 
-            if (password.Length <= 8)
-                throw new Exception("O tamamnho da senha deve ser maior que 8 caracteres");
-
             //....
         }
     }
@@ -187,26 +184,30 @@ namespace Objetos
         int Id { get; set; }       
         bool PodeVisualizarTelaManutencao { get; set; }
     }
-    public class UsuarioPadrao : Usuario
+    public class UsuarioAdmin : Usuario
     {
         public int Id { get; set; }
+        public UsuarioAdmin(int Id)
+        {
+            this.Id = Id;
+        }  
         public bool PodeVisualizarTelaManutencao
         {
             get
             {
-                return false;
+                return true;
             }
             set => throw new NotImplementedException();
         }       
     }
 
-    public class UsuarioAdmin : Usuario
+    public class UsuarioPadrao : Usuario
     {
-        public UsuarioAdmin(int Id)
+        public int Id { get; set; }
+        public UsuarioPadrao(int Id)
         {
             this.Id = Id;
-        }
-        public int Id { get; set; }
+        }        
         public bool PodeVisualizarTelaManutencao
         {
             get
