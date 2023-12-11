@@ -21,7 +21,7 @@ A violação do Single Responsibility Principle pode gerar alguns problemas, sen
 
 Nosso primeiro contexto de exemplo é um cliente realizando login em uma plataforma. Como podemos ver abaixo no primeiro exemplo, além do efetuar o log in o método também faz a validação dos dados vindos do modelos de dados de log in, ferindo o princípio de responsabilidade única.
 
-```
+``` C#
 namespace Modelos
 {
     public class LogOnModel
@@ -71,7 +71,7 @@ Isso pode ser ajustado separando as validações em uma outra classe responsáve
 
 Essa separação também providencia uma leitura melhor do método principal e coesão no funcionamento das classes e métodos envolvidos.
 
-```
+``` C#
 namespace Modelos
 {
     public class LogOnModel
@@ -134,7 +134,7 @@ Nosso contexto de exemplo é o carregamento de permissões em uma aplicação pa
 
 A princípio podemos não ver problemas com esta implementação, entretanto, para extensões futuras, alterar uma classe já existente para adicionar um novo comportamento, faz com que o desenvolvedor corra um sério risco de introduzir bugs em algo que já estava funcionando.
 
-```
+``` C#
 namespace Objetos {
     public class Usario
     {
@@ -177,7 +177,7 @@ Neste caso, para efetuar um ajuste seguindo o princípio, apenas separamos de fo
 
 Ainda podemos fazer de forma que todos usuários padrões do sistema tenha sua permissão verificado em caso de alguma configuração especial.
 
-```
+``` C#
 using System;
 
 namespace Objetos
@@ -258,7 +258,7 @@ Exemplos de violação do LSP:
 
 ### Exemplo de Não Aplicação do Princípio
 
-```
+``` C#
 namespace Sobrescrição
 {
     interface Carro
@@ -322,7 +322,7 @@ Este princípio define que ter diversas interfaces é melhor do que definir uma 
 
 ### Exemplo de Não Aplicação do Princípio
 
-```
+``` C#
 interface Veiculo
 {
     double GasolinaNoTanque();
@@ -349,7 +349,7 @@ public class CarroEletrico : Veiculo
 
 Para corrigir especificamos ainda mais as interfaces a serem utilizadas para abstrair as especificidades.
 
-```
+``` C#
 interface Veiculo
 {
     string Marca { get; set; }
@@ -403,7 +403,7 @@ Importante: Inversão de Dependência não é igual a Injeção de Dependência,
 
 *Nesse trecho de código temos um alto nível de acoplamento, isso ocorre pois a classe tem a responsabilidade de criar uma instância da classe SqlConnection! Para reaproveitar essa classe em outro sistema, teriamos obrigatoriamente de levar a classe SqlConnection junto, portanto, temos um forte acoplamento aqui.*
 
-```
+``` C#
 using System.Data.SqlClient;
 
 public class RepositorioUsuarios
@@ -419,7 +419,7 @@ public class RepositorioUsuarios
 
 Para resolver esse problema de acoplamento, podemos refatorar nosso código da seguinte forma.
 
-```
+``` C#
 using System.Data.SqlClient;
 
 public class RepositorioUsuarios
