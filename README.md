@@ -55,11 +55,7 @@ namespace Controladores
             if (password.Length <= 8)
                 throw new Exception("O tamamnho da senha deve ser maior que 8 caracteres");
 
-            if (password.Length <= 8)
-                throw new Exception("O tamamnho da senha deve ser maior que 8 caracteres");
-
             //....
-
             // Seguir com login e criação de sessão para o usuário
         }
         #endregion
