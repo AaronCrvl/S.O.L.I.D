@@ -1,14 +1,12 @@
-# S.O.L.I.D 
+# 🏠 S.O.L.I.D 
 
-Os princípios S.O.L.I.D são foram criados a partir da análise e observação da orientação a objetos e design de projetos. Esses princípios visam a criação de um código com o mínimo de acoplamento possível, que são facilmente refatoráveis e tem sua leitura facilitada pela aplicação destes.
+Os princípios S.O.L.I.D foram criados a partir da análise e observação da orientação a objetos e design de projetos. Esses 5 princípios visam a criação de um código com o mínimo de acoplamento possível, que são facilmente refatoráveis e tem sua leitura facilitada pela aplicação destes. Basicamente *SOLID são cinco princípios da programação orientada a objetos que facilitam no desenvolvimento de softwares, tornando-os fáceis de manter e estender. Esses princípios podem ser aplicados a qualquer linguagem de POO.*
 
-*SOLID são cinco princípios da programação orientada a objetos que facilitam no desenvolvimento de softwares, tornando-os fáceis de manter e estender. Esses princípios podem ser aplicados a qualquer linguagem de POO.*
-
-Estes arquivo visa apresentar quais são estes conceitos, assim como, demonstrar exemplos 
+Estes repositório visa apresentar quais são estes conceitos, assim como, demonstrar exemplos utilizando linguagens e casos de uso diversos. 
 
 ## 1. SRP — Single Responsibility Principle (Princípio da Responsabilidade Única):
 
-Este princípio define que as responsabilidades devem ser separadas conforme seu ator e devem definir apenas um objetivo a ser completo, ou seja, uma classe ou método deve atuar somente sobre uma única responsabilidade.
+Este princípio define que as responsabilidades devem ser separadas conforme seu ator, tendo apenas um objetivo a ser completo, ou seja, uma classe ou método deve atuar somente sobre uma única responsabilidade.
 
 A violação do Single Responsibility Principle pode gerar alguns problemas, sendo eles:
 
@@ -17,9 +15,9 @@ A violação do Single Responsibility Principle pode gerar alguns problemas, sen
 - Dificuldades na implementação de testes automatizados — É difícil de “mockar” esse tipo de classe;
 - Dificuldades para reaproveitar o código;
 
-### Exemplo de Aplicação do Princípio
+### Exemplo de Aplicação do Princípio 01
 
-Nosso primeiro contexto de exemplo é um cliente realizando login em uma plataforma. Como podemos ver abaixo no primeiro exemplo, além do efetuar o log in o método também faz a validação dos dados vindos do modelos de dados de log in, ferindo o princípio de responsabilidade única.
+Nosso primeiro caso de exemplo é a realizaçao de um login em uma plataforma qualquer. Como podemos ver abaixo no primeiro exemplo, além do efetuar o login, o método também faz a validação dos dados vindos do modelos de dados de login, ferindo o princípio de responsabilidade única.
 
 ``` C#
 namespace Modelos
@@ -63,9 +61,7 @@ namespace Controladores
 }
 ```
 
-Isso pode ser ajustado separando as validações em uma outra classe responsável apenas por validações em modelos de dados, dessa maneira, caso novas alterações sejam necessárias o código pode ser extendido sem problemas.
-
-Essa separação também providencia uma leitura melhor do método principal e coesão no funcionamento das classes e métodos envolvidos.
+Ajustando: Isso pode ser ajustado separando as validações em uma outra classe, responsável apenas por validações em modelos de dados, dessa maneira, caso novas alterações sejam necessárias o código pode ser extendido sem problemas. Essa separação também providencia uma leitura melhor do método principal.
 
 ``` C#
 namespace Modelos
@@ -117,9 +113,7 @@ namespace Validacoes
 
 ## 2. OCP — Open-Closed Principle (Princípio Aberto-Fechado):
 
-Esse princípio destaca que uma classe deve se manter com inalterada em relação ao seu escopo inicial mas deve possibilitar uma extensão fácil caso necessário.
-
-De forma resumida podemos dizer que os objetos devem estar abertos para extensão, mas fechados para modificação.
+Esse princípio destaca que uma classe deve se manter inalterada em relação ao seu escopo inicial mas deve possibilitar uma extensão fácil caso necessário. De forma resumida podemos dizer que os objetos devem estar abertos para extensão, mas fechados para modificação.
 
 ### Exemplo de Aplicação do Princípio
 
@@ -167,7 +161,6 @@ namespace Controladores
 ```
 
 Neste caso, para efetuar um ajuste seguindo o princípio, apenas separamos de forma que cada classe do tipo Usuario utilize a interface de usuário e através desta definimos atributos respectivos aquele tipo de usuário.
-
 Ainda podemos fazer de forma que todos usuários padrões do sistema tenha sua permissão verificado em caso de alguma configuração especial.
 
 ``` C#
