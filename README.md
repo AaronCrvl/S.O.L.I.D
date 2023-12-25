@@ -111,6 +111,191 @@ namespace Validacoes
 }
 ```
 
+### Exemplo de Aplicação do Princípio 02
+
+Neste segundo caso temos um endpoint que realiza registros de pedidos em uma plataforma de venda de produtos. No cenário inicial tanto a validaçao de permissoes do usuário em relaçao a plataforma quanto o registro do pedido foram validados.
+
+``` Typescript
+namespace Exemplo1 {
+    namespace Tipos {
+        export type RequisicaoPedido = {
+            id_pedido : number,
+            id_usuario : number
+            username : string,
+            hash_seguranca_usuario : string,
+            hora_requisicao : Date,
+            id_produto : number,
+            qtd_produto : number,
+            valor_base : number,
+        }
+
+        export type PermissaoUsuario = {
+            nome_permissao : string,
+            permitir : boolean,
+            data_adicao_permissao : Date,
+        }
+    }
+
+    namespace Controladores.Gerenciamento.Seguranca {
+        export class GerenciadorDePermissoes {    
+            permissoesUsuario : any[]
+            constructor(id_usuario : number) {
+                if(id_usuario) {
+                    // Busca no banco de dados permissoes do Usuario
+                }
+                else {
+                    // Buscar pelo nm_permissao            
+                }
+            }
+        }
+    }
+
+    namespace Dados.Objetos {
+        export class Usuario {
+            permissoes : Tipos.PermissaoUsuario[]
+            id_usuario : number
+            username : string
+            senha : string        
+            
+            constructor(id : number, user : string, senha : string) {
+                this.id_usuario = id;
+                this.username = user;
+                this.senha = senha; 
+                this.permissoes = new Controladores.Gerenciamento.Seguranca.GerenciadorDePermissoes(id).permissoesUsuario;
+            }
+        }
+    }
+
+    namespace Financeiro {    
+        class PaymentController {       
+            constructor() {}     
+            
+            RegistrarPagamento(pedido : Tipos.RequisicaoPedido) : Promise<Response> {
+                return new Promise((resolve, reject) => {
+                    // A lógica de permissao deve ser extraída da camada financeira da aplicaçao
+                    let usuario = new Dados.Objetos.Usuario(pedido.id_usuario, pedido.username, pedido.hash_seguranca_usuario)
+                    let permissao = usuario.permissoes.find((permissao) => {
+                        if(permissao.nome_permissao === "PERMITE_EFETUAR_COMPRA_NA_PLATAFORMA") {
+                            return permissao.permitir       
+                        }                                          
+                    })
+                    let temPermissao = permissao ? permissao.permitir : false
+
+                    if(temPermissao) {
+                        // Lógica de registro do pedido
+                    } 
+                    else {
+                        // Rejeicao em caso de o usuário nao ter a permissao
+                        reject(new Response(JSON.stringify("Este usuário ainda nao tem permissao para efetuar compras na plataforma. Favor entrar em contato com o suporte."), {
+                            status: 401, // Unauthorized
+                            statusText: 'Nao Autorizado',
+                            headers: { 'Content-Type': 'application/json' }
+                        }))
+                    }
+                })
+            }
+        }
+    }
+}
+```
+
+Ajustando: Fazendo a extensao dos controladores existente criando também um anmespace apenas para alteraçoes relativas a permissoes proporcionando coesao e legibilidade para o código.
+
+``` Typescript
+namespace Exxemplo1Solucao {
+    namespace Tipos {
+        export type RequisicaoPedido = {
+            id_pedido : number,
+            id_usuario : number
+            username : string,
+            hash_seguranca_usuario : string,
+            hora_requisicao : Date,
+            id_produto : number,
+            qtd_produto : number,
+            valor_base : number,
+        }
+
+        export type PermissaoUsuario = {
+            nome_permissao : string,
+            permitir : boolean,
+            data_adicao_permissao : Date,
+        }
+    }
+
+    namespace Controladores.Gerenciamento.Seguranca {
+        export class GerenciadorDePermissoes {    
+            permissoesUsuario : any[]
+            constructor(id_usuario : number) {
+                if(id_usuario) {
+                    // Busca no banco de dados permissoes do Usuario
+                }
+                else {
+                    // Buscar pelo nm_permissao            
+                }
+            }
+        }
+    }
+
+    namespace Dados.Objetos {
+        export class Usuario {
+            permissoes : Tipos.PermissaoUsuario[]
+            id_usuario : number
+            username : string
+            senha : string        
+            
+            constructor(id : number, user : string, senha : string) {
+                this.id_usuario = id;
+                this.username = user;
+                this.senha = senha; 
+                this.permissoes = new Controladores.Gerenciamento.Seguranca.GerenciadorDePermissoes(id).permissoesUsuario;
+            }
+        }
+    }
+
+    namespace Financeiro {    
+        class PaymentController {       
+            constructor() {}     
+            
+            RegistrarPagamento(pedido : Tipos.RequisicaoPedido) : Promise<Response> {
+                return new Promise((resolve, reject) => {
+                    if(!new Permissao.PermissoesController().UsuarioTemPermissaoDeCompra(pedido.id_usuario, pedido.username, pedido.hash_seguranca_usuario)) {
+                        // Rejeicao em caso de o usuário nao ter a permissao
+                        reject(new Response(JSON.stringify("Este usuário ainda nao tem permissao para efetuar compras na plataforma. Favor entrar em contato com o suporte."), {
+                            status: 401, // Unauthorized
+                            statusText: 'Nao Autorizado',
+                            headers: { 'Content-Type': 'application/json' }
+                        }))
+                    }
+
+                    // Lógica de registro do pedido                
+                })
+            }
+
+            //........
+        }
+    }
+
+    // Separaçao por namespace para melhor ligibilidade e extensao futura
+    namespace Permissao {
+        export class PermissoesController {
+            constructor() {}
+
+            UsuarioTemPermissaoDeCompra(id_usuario : number, username : string, hash_seguranca_usuario : string) : boolean {
+                // A lógica de permissao deve ser extraída da camada financeira da aplicaçao
+                let usuario = new Dados.Objetos.Usuario(id_usuario, username, hash_seguranca_usuario)
+                let permissao = usuario.permissoes.find((permissao) => {
+                    if(permissao.nome_permissao === "PERMITE_EFETUAR_COMPRA_NA_PLATAFORMA") {
+                        return permissao.permitir       
+                    }                                          
+                })
+                return permissao ? permissao.permitir : false
+            }
+
+            //........
+        }
+    }
+}
+```
 ## 2. OCP — Open-Closed Principle (Princípio Aberto-Fechado):
 
 Esse princípio destaca que uma classe deve se manter inalterada em relação ao seu escopo inicial mas deve possibilitar uma extensão fácil caso necessário. De forma resumida podemos dizer que os objetos devem estar abertos para extensão, mas fechados para modificação.
