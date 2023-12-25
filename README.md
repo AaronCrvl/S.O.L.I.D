@@ -15,7 +15,7 @@ A violação do Single Responsibility Principle pode gerar alguns problemas, sen
 - Dificuldades na implementação de testes automatizados — É difícil de “mockar” esse tipo de classe;
 - Dificuldades para reaproveitar o código;
 
-### Exemplo de Aplicação do Princípio 01
+### Exemplo de Aplicação do Princípio 01 - C#
 
 Nosso primeiro caso de exemplo é a realizaçao de um login em uma plataforma qualquer. Como podemos ver abaixo no primeiro exemplo, além do efetuar o login, o método também faz a validação dos dados vindos do modelos de dados de login, ferindo o princípio de responsabilidade única.
 
@@ -111,7 +111,7 @@ namespace Validacoes
 }
 ```
 
-### Exemplo de Aplicação do Princípio 02
+### Exemplo de Aplicação do Princípio 02 - Typescript
 
 Neste segundo caso temos um endpoint que realiza registros de pedidos em uma plataforma de venda de produtos. No cenário inicial tanto a validaçao de permissoes do usuário em relaçao a plataforma quanto o registro do pedido foram validados.
 
@@ -300,7 +300,7 @@ namespace Exxemplo1Solucao {
 
 Esse princípio destaca que uma classe deve se manter inalterada em relação ao seu escopo inicial mas deve possibilitar uma extensão fácil caso necessário. De forma resumida podemos dizer que os objetos devem estar abertos para extensão, mas fechados para modificação.
 
-### Exemplo de Aplicação do Princípio
+### Exemplo de Aplicação do Princípio - C#
 
 Nosso contexto de exemplo é o carregamento de permissões em uma aplicação para um usuário. A primeiro momento separamos ambas as funções e validamos qual o tipo de usuário foi instanciando para verificar se o mesmo tem a pemissão retornar esta informação para o método pai.
 
@@ -431,7 +431,7 @@ Exemplos de violação do LSP:
 - Retornar valores de tipos diferentes da classe base;
 - Lançar uma exceção inesperada;
 
-### Exemplo de Não Aplicação do Princípio
+### Exemplo de Não Aplicação do Princípio - C#
 
 ``` C#
 namespace Sobrescrição
@@ -495,7 +495,7 @@ namespace ValoresDeTiposDiferentes
 Este princípio define que ter diversas interfaces é melhor do que definir uma interface geral, ou seja, o princípio visa dar preferencia para a criação de interfaces mais específicas ao invés de interfaces genéricas.
 
 
-### Exemplo de Não Aplicação do Princípio
+### Exemplo de Não Aplicação do Princípio - C#
 
 ``` C#
 interface Veiculo
@@ -574,7 +574,7 @@ De acordo com Uncle Bob, esse princípio pode ser definido da seguinte forma:
 
 Importante: Inversão de Dependência não é igual a Injeção de Dependência, fique ciente disso! A Inversão de Dependência é um princípio (Conceito) e a Injeção de Dependência é um padrão de projeto (Design Pattern).
 
-### Exemplo de Não Aplicação do Princípio
+### Exemplo de Não Aplicação do Princípio - C#
 
 *Nesse trecho de código temos um alto nível de acoplamento, isso ocorre pois a classe tem a responsabilidade de criar uma instância da classe SqlConnection! Para reaproveitar essa classe em outro sistema, teriamos obrigatoriamente de levar a classe SqlConnection junto, portanto, temos um forte acoplamento aqui.*
 
