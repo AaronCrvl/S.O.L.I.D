@@ -422,6 +422,55 @@ namespace Controladores
     }
 }
 ```
+### Exemplo de Aplicação do Princípio 02 - Typescript
+
+Neste cenário definimos tipos comuns a um mesmo namespace e que compartilham semelhanças em suas estruturas. 
+
+``` Typescript
+namespace Exemplo {
+    namespace Formas {
+        class Circulo {
+            Raio : number           
+        }
+
+        class Quadrado {
+            TamanhoLado : number                   
+        }
+    }
+}
+```
+
+Ajustando: Podemos unir as características em comum das formas em uma interface geral para esses tipos, facilitando a extensão e seguindo uma padronização para a criação de novos tipos.
+
+``` Typescript
+namespace Exemplo {
+    namespace Interfaces {
+        export interface Formas {
+            Area() : number            
+        }
+    }
+    
+    namespace Formas {
+        class Circulo implements Interfaces.Formas {
+            Raio : number
+
+            Area(): number {
+                return Math.PI *  Math.pow(this.Raio, 2)
+                // throw new Error("Method not implemented.")
+            }                                                    
+        }
+
+        class Quadrado implements Interfaces.Formas {
+            TamanhoLado : number        
+
+            Area() : number {
+                return Math.pow(this.TamanhoLado, 2 )
+                // throw new Error("Method not implemented.")
+            }
+        }
+    }
+}
+```
 
 ## 3. LSP— Liskov Substitution Principle (Princípio da substituição de Liskov):
 
