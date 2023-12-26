@@ -166,33 +166,35 @@ namespace Exemplo1 {
         }
     }
 
-    namespace Financeiro {    
-        class PaymentController {       
-            constructor() {}     
-            
-            RegistrarPagamento(pedido : Tipos.RequisicaoPedido) : Promise<Response> {
-                return new Promise((resolve, reject) => {
-                    // A lógica de permissao deve ser extraída da camada financeira da aplicaçao
-                    let usuario = new Dados.Objetos.Usuario(pedido.id_usuario, pedido.username, pedido.hash_seguranca_usuario)
-                    let permissao = usuario.permissoes.find((permissao) => {
-                        if(permissao.nome_permissao === "PERMITE_EFETUAR_COMPRA_NA_PLATAFORMA") {
-                            return permissao.permitir       
-                        }                                          
-                    })
-                    let temPermissao = permissao ? permissao.permitir : false
+    namespace Controladores {
+        namespace Financeiro {    
+            class PaymentController {       
+                constructor() {}     
+                
+                RegistrarPagamento(pedido : Tipos.RequisicaoPedido) : Promise<Response> {
+                    return new Promise((resolve, reject) => {
+                        // A lógica de permissao deve ser extraída da camada financeira da aplicaçao
+                        let usuario = new Dados.Objetos.Usuario(pedido.id_usuario, pedido.username, pedido.hash_seguranca_usuario)
+                        let permissao = usuario.permissoes.find((permissao) => {
+                            if(permissao.nome_permissao === "PERMITE_EFETUAR_COMPRA_NA_PLATAFORMA") {
+                                return permissao       
+                            }                                          
+                        })
+                        let temPermissao = permissao ? permissao.permitir : false
 
-                    if(temPermissao) {
-                        // Lógica de registro do pedido
-                    } 
-                    else {
-                        // Rejeicao em caso de o usuário nao ter a permissao
-                        reject(new Response(JSON.stringify("Este usuário ainda nao tem permissao para efetuar compras na plataforma. Favor entrar em contato com o suporte."), {
-                            status: 401, // Unauthorized
-                            statusText: 'Nao Autorizado',
-                            headers: { 'Content-Type': 'application/json' }
-                        }))
-                    }
-                })
+                        if(temPermissao) {
+                            // Lógica de registro do pedido
+                        } 
+                        else {
+                            // Rejeicao em caso de o usuário nao ter a permissao
+                            reject(new Response(JSON.stringify("Este usuário ainda nao tem permissao para efetuar compras na plataforma. Favor entrar em contato com o suporte."), {
+                                status: 401, // Unauthorized
+                                statusText: 'Nao Autorizado',
+                                headers: { 'Content-Type': 'application/json' }
+                            }))
+                        }
+                    })
+                }
             }
         }
     }
@@ -252,46 +254,48 @@ namespace Exxemplo1Solucao {
         }
     }
 
-    namespace Financeiro {    
-        class PaymentController {       
-            constructor() {}     
-            
-            RegistrarPagamento(pedido : Tipos.RequisicaoPedido) : Promise<Response> {
-                return new Promise((resolve, reject) => {
-                    if(!new Permissao.PermissoesController().UsuarioTemPermissaoDeCompra(pedido.id_usuario, pedido.username, pedido.hash_seguranca_usuario)) {
-                        // Rejeicao em caso de o usuário nao ter a permissao
-                        reject(new Response(JSON.stringify("Este usuário ainda nao tem permissao para efetuar compras na plataforma. Favor entrar em contato com o suporte."), {
-                            status: 401, // Unauthorized
-                            statusText: 'Nao Autorizado',
-                            headers: { 'Content-Type': 'application/json' }
-                        }))
-                    }
+    namespace Controladores {
+        namespace Financeiro {    
+            class PaymentController {       
+                constructor() {}     
+                
+                RegistrarPagamento(pedido : Tipos.RequisicaoPedido) : Promise<Response> {
+                    return new Promise((resolve, reject) => {
+                        if(!new Permissao.PermissoesController().UsuarioTemPermissaoDeCompra(pedido.id_usuario, pedido.username, pedido.hash_seguranca_usuario)) {
+                            // Rejeicao em caso de o usuário nao ter a permissao
+                            reject(new Response(JSON.stringify("Este usuário ainda nao tem permissao para efetuar compras na plataforma. Favor entrar em contato com o suporte."), {
+                                status: 401, // Unauthorized
+                                statusText: 'Nao Autorizado',
+                                headers: { 'Content-Type': 'application/json' }
+                            }))
+                        }
 
-                    // Lógica de registro do pedido                
-                })
+                        // Lógica de registro do pedido                
+                    })
+                }
+
+                //........
             }
-
-            //........
         }
-    }
 
-    // Separaçao por namespace para melhor ligibilidade e extensao futura
-    namespace Permissao {
-        export class PermissoesController {
-            constructor() {}
+        // Separaçao por namespace para melhor ligibilidade e extensao futura
+        namespace Permissao {
+            export class PermissoesController {
+                constructor() {}
 
-            UsuarioTemPermissaoDeCompra(id_usuario : number, username : string, hash_seguranca_usuario : string) : boolean {
-                // A lógica de permissao deve ser extraída da camada financeira da aplicaçao
-                let usuario = new Dados.Objetos.Usuario(id_usuario, username, hash_seguranca_usuario)
-                let permissao = usuario.permissoes.find((permissao) => {
-                    if(permissao.nome_permissao === "PERMITE_EFETUAR_COMPRA_NA_PLATAFORMA") {
-                        return permissao.permitir       
-                    }                                          
-                })
-                return permissao ? permissao.permitir : false
+                UsuarioTemPermissaoDeCompra(id_usuario : number, username : string, hash_seguranca_usuario : string) : boolean {
+                    // A lógica de permissao deve ser extraída da camada financeira da aplicaçao
+                    let usuario = new Dados.Objetos.Usuario(id_usuario, username, hash_seguranca_usuario)
+                    let permissao = usuario.permissoes.find((permissao) => {
+                        if(permissao.nome_permissao === "PERMITE_EFETUAR_COMPRA_NA_PLATAFORMA") {
+                            return permissao       
+                        }                                          
+                    })
+                    return permissao ? permissao.permitir : false
+                }
+
+                //........
             }
-
-            //........
         }
     }
 }
